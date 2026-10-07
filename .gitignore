@@ -1,0 +1,25 @@
+# environment
+venv/
+.venv/
+__pycache__/
+*.pyc
+wheels/
+# your documents and results never go to git
+input/*
+output/*
+!input/.gitkeep
+!output/.gitkeep
+*.png
+!docs/*.png
+*.pdf
+!examples/sample.pdf
+# local job lists / plans and window settings (keep only the examples)
+jobs_*.txt
+plan*.json
+!examples/sample_plan.json
+pdfclip_gui.cfg
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

@@ -1,0 +1,11 @@
+# PDF Clipper — batch jobs.  One job per line:
+#   file.pdf | from | to (or END / NEXT) | image name [| dpi]
+# from / to:  6.2  ·  6.2.1 (also items without title text)  ·  5. GENERAL (number + title, fuzzy)  ·  ALL (whole document)
+# The PDF goes into the "input" folder, images appear in "output". Lines starting with # are comments.
+# "dpi = 300" sets the quality for the following lines.
+# Try it: copy examples\sample.pdf into input\ and run run.bat
+dpi = 200
+sample.pdf | 6.1 | 6.2 | Preparation
+sample.pdf | 6.2 Chassis | NEXT | Chassis
+sample.pdf | 6.2.2 | 6.3 | Figure_step
+sample.pdf | 7 | END | Final_test | 150

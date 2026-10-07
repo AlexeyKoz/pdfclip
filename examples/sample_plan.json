@@ -1,0 +1,16 @@
+{
+ "dpi": 300,
+ "max_height_pt": 2526,
+ "jobs": [
+  {
+   "pdf": "sample",
+   "clips": [
+    {"out": "Preparation.png",   "from": "6.1. Preparation", "to": "NEXT"},
+    {"out": "Chassis.png",       "from": "6.2 Chassis",      "to": "6.3"},
+    {"out": "Figure_step.png",   "from": "6.2.2",            "to": "NEXT"},
+    {"out": "Final_test.png",    "from": {"text": "7", "page": 9}, "to": "END", "dpi": 200},
+    {"out": "Whole_document.png","from": "ALL",              "to": "END"}
+   ]
+  }
+ ]
+}

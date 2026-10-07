@@ -1,0 +1,91 @@
+PDF CLIPPER 1.1.0 — start without .bat (when antivirus blocks scripts)
+=====================================================================
+
+STEP 0 (once). Unzip pdfclip-v1.1.0-offline-win64.zip, e.g. to  C:\pdfclip
+        The folder must contain: clip_gui.py, clip_pdf.py, clip_batch.py, requirements.txt
+        and the folders wheels, input, output, examples.
+        Python 3.10–3.14 (64-bit) must be installed (python.org, tick "Add python to PATH").
+        All libraries are inside the "wheels" folder — no internet is needed.
+
+        Updating from an older version? Replace the program files in your folder with the new ones.
+        The existing "venv" folder can stay — the libraries are the same.
+
+STEP 1. Open PowerShell:  Start → type  powershell  → Enter.
+        (If PowerShell is blocked, open cmd instead and use the CMD block below.)
+
+STEP 2. Copy the WHOLE block below, right-click into the window to paste, press Enter.
+        If your folder is not C:\pdfclip, fix the path in the first line.
+
+-------------------- POWERSHELL: copy everything between the lines --------------------
+cd "C:\pdfclip"
+py -3 --version
+py -3 -m venv venv
+.\venv\Scripts\python.exe -m pip install --no-index --find-links wheels -r requirements.txt
+.\venv\Scripts\pythonw.exe clip_gui.py
+---------------------------------------------------------------------------------------
+
+What happens: 1) go to the folder; 2) check Python (prints "Python 3.1x.x"); 3) a private environment "venv" is
+created inside the folder (nothing is changed on the system); 4) libraries are installed FROM the wheels folder,
+no internet needed; 5) the program window opens.
+
+NEXT TIMES only two lines:
+cd "C:\pdfclip"
+.\venv\Scripts\pythonw.exe clip_gui.py
+
+-------------------- CMD (if PowerShell is not available) -----------------------------
+cd /d "C:\pdfclip"
+py -3 --version
+py -3 -m venv venv
+venv\Scripts\python.exe -m pip install --no-index --find-links wheels -r requirements.txt
+venv\Scripts\pythonw.exe clip_gui.py
+---------------------------------------------------------------------------------------
+
+Run the lines IN THIS ORDER and only after "cd". Running "py -3 -m venv venv" from C:\Windows\System32
+creates the environment there instead of in your folder.
+
+USING THE PROGRAM
+  Top of the window (shared by all tabs):
+    Output folder      — where the images go (default: the "output" folder). "Open" opens it.
+    Image quality      — 300 dpi for small print and tables; you can type any number up to 1200.
+    Split images taller than N pages — long sections become name-1.png, name-2.png … (0 = always one image).
+
+  MANUAL tab — cut what you choose
+    1. "Open PDF…" — numbered items are scanned automatically (6, 6.2, 6.2.1, also numbers without a title).
+    2. "From item" — pick the start. "To item" is filled in by itself with the next item of the same level
+       (6.2 → 6.3, the sub-items 6.2.x stay inside). The cut stops right before the "To" item.
+    3. "Add to queue" (the image name is optional), or "Add all items" down to a level (1 = 6, 2 = 6.2, 3 = 6.2.1).
+    4. "▶ Run". "Save queue as plan…" keeps the queue as a .json file to repeat it later in the Plan tab.
+    No numbered headings in the PDF? Tick "Whole document".
+
+  AUTO tab — every numbered item becomes its own image, nothing to pick
+    1. "File…" (one PDF) or "Folder…" (all PDFs in it, each gets its own subfolder).
+    2. Levels: 1–2 = items 6 and 6.2;  2–3 = items 6.2 and 6.2.1.  Pages: e.g. 4-120, empty = automatic.
+    3. "Check (dry run)" shows what will be cut, "▶ Run — write images" writes the images.
+       With "Save what was found as plan_auto.json" you can rename images or fix a cut there
+       and run it again in the Plan tab.
+
+  PLAN tab — repeat saved cuts (e.g. for a new revision of the same document)
+    1. "PDF folder" — where the PDFs are. The plan may name a PDF only by part of its name.
+    2. "Plan (.json)" — a plan saved from Manual or Auto (or written by hand, see README.md). "Edit" opens it.
+    3. "Check (dry run)" first, then "▶ Run — write images".
+
+  Headers, footers, blank page tails and Word comment margins are removed automatically.
+  Try everything on examples\sample.pdf and examples\sample_plan.json.
+
+BATCH MODE (no window)
+  .\venv\Scripts\python.exe clip_batch.py                        — jobs.txt, PDFs from input\, images to output\
+  .\venv\Scripts\python.exe clip_batch.py plan.json --docs C:\docs  — a plan
+  .\venv\Scripts\python.exe clip_batch.py --auto C:\docs --depth 1-2  — every item of every PDF
+  Add  --dry  to only check what would be cut.
+
+IF SOMETHING GOES WRONG
+- "py is not recognized" → Python is missing or not on PATH; try replacing  py -3  with  python  in all lines.
+- "Location 'wheels' is ignored" → you are not in the program folder; run the "cd" line first.
+- pip says "No matching distribution" → Python version is outside 3.10–3.14 or it is 32-bit. Install 64-bit
+  Python 3.10–3.14, or with internet:  venv\Scripts\python.exe -m pip install -r requirements.txt
+- The window does not open and there is no error → run with python.exe to see the message:
+  venv\Scripts\python.exe clip_gui.py
+- Antivirus blocks pip / venv → ask IT to whitelist the folder; everything inside is plain Python plus the standard
+  pymupdf (MuPDF) and pillow packages from pypi.org.
+- A cut looks wrong or an item is missing → press "Check (dry run)" and look at the page numbers in the log;
+  pages that are scans (no text layer) are listed there — items on them cannot be found.
